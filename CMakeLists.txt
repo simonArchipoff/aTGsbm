@@ -17,14 +17,16 @@ FetchContent_Declare(
     GIT_TAG        master
 )
 
+
 # Faire le téléchargement et l'ajout à votre projet
 option(KISSFFT_OPENMP "Build kissfft with OpenMP support" OFF)
 option(KISSFFT_PKGCONFIG "Build pkg-config files" OFF)
-option(KISSFFT_STATIC "Build kissfft as static (ON) or shared library (OFF)" OFF)
+option(KISSFFT_STATIC "Build kissfft as static (ON) or shared library (OFF)" ON)
 option(KISSFFT_TEST "Build kissfft tests" OFF)
 option(KISSFFT_TOOLS "Build kissfft command-line tools" OFF)
 option(KISSFFT_USE_ALLOCA "Use alloca instead of malloc" OFF)
 set(KISSFFT_DATATYPE "float")
+
 
 FetchContent_MakeAvailable(kissfft)
 
@@ -59,6 +61,8 @@ target_include_directories(DSPFilters PUBLIC ${dspfilters_SOURCE_DIR}/DSPFilters
 qt_add_executable(appaTGsbm
     main.cpp
 )
+
+
 
 #target_include_directories(appaTGsbm PRIVATE kiss-fft)
 
@@ -103,3 +107,13 @@ include(GNUInstallDirs)
 install(TARGETS appaTGsbm
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+
+add_executable(testapp
+    test.cpp
+    diraccombconv.cpp
+)
+
+target_link_libraries(testapp PUBLIC
+    kissfft)
+message(STATUS "KissFFT_FOUND: ${kissfft_FOUND}")
